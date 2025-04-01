@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asraful Islam's 3D Scene</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-color: #816565; /* Black background */
+            font-family: Arial, sans-serif;
+            color: white; /* White text */
+        }
+        canvas { display: block; }
+        .info {
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            color: white;
+            font-size: 24px;
+            z-index: 1;
+            text-shadow: 2px 2px 5px rgba(0, 255, 0, 0.5); /* Green shadow */
+        }
+        .info div {
+            margin: 10px 0;
+        }
+        .info span {
+            color: #00ff00; /* Green for name and important info */
+            font-weight: bold;
+        }
+        .footer {
+            position: absolute;
+            bottom: 10%;
+            right: 5%;
+            color: white;
+            font-size: 18px;
+            z-index: 1;
+            text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.5); /* Red shadow for footer */
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <div><span>Name:</span> Asraful Islam</div>
+        <div><span>Age:</span> 21</div>
+        <div><span>Location:</span> Sirajganj</div>
+        <div><span>Study:</span> Intermediate Science</div>
+    </div>
+    <div class="footer">
+        <div>Stay curious, keep learning!</div>
+        <div>Feel free to contact me if you need help!</div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Create a Cube
+        const geometry = new THREE.BoxGeometry(2, 2, 2);
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        // Add light
+        const light = new THREE.PointLight(0xffffff, 1, 100);
+        light.position.set(10, 10, 10);
+        scene.add(light);
+
+        // Font loader for name
+        const loader = new THREE.FontLoader();
+        loader.load('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/fonts/helvetiker_regular.typeface.json', function (font) {
+            const textGeometry = new THREE.TextGeometry('Asraful Islam', {
+                font: font,
+                size: 1,
+                height: 0.2
+            });
+
+            const textMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+            textMesh.position.set(-5, 2, 0);  // Position of the name
+            scene.add(textMesh);
+        });
+
+        // Camera Position
+        camera.position.z = 5;
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Responsive resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
+
